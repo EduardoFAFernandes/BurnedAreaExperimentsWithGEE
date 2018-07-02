@@ -35,13 +35,15 @@ After running the script multiple times with different thresholds the best was -
 ## 02_MultipleDeltas_Threshold
 The same as the previous file but other indices are used, namely: NBR1, NBR2, and EVI.
 
-NDVI is not the best index to use, so other indices were testes, the best was NBR1 with a threshold of -0,240 that the accuracy was 0.9236 and the kappa 0,7768.
+NDVI is not the best index to use, so other indices were testes, the best was NBR1 with a threshold of -0,240 that attained an accuracy of 0.9236 and kappa of 0,7768.
 
 ## 03_Classifiers
-Classifying the burned area with multiple indices and using the available classifiers GEE provides. Manually choosing a threshold can become a tedious task, this is a problem we are able to solve with the help of machine learning. The classifiers will receive as input 15 features. The indices used are : NDVI, MIRBI, NBR, BAI, and NBR4. But the classifier will receive the indices pre, post-fire, and their delta. The best classifier was the SVM followed closely by gmoMaxEnt, CART, continuousNaiveBayes, and randomForest. The other classifiers provided unsatisfactory results or gave a server error.
+Classifying the burned area with multiple indices and using the available classifiers GEE provides. 
+
+Manually choosing a threshold can become a tedious task, this is a problem we are able to solve with the help of machine learning. The classifiers will receive as input 15 features. The indices used are : NDVI, MIRBI, NBR, BAI, and NBR4. But the classifier will receive the indices pre, post-fire, and their delta. The best classifier was the SVM followed closely by gmoMaxEnt, CART, continuousNaiveBayes, and randomForest. The other classifiers provided unsatisfactory results or arose a server error.
 
 ## 04_Smoothing
-After analyzing the images there is a bit of noise in the classifications, so the next step would be to try to reduce it. There were two main ideas to reduce the noise they are implemented it the files that start with *04_Smoothing*.
+After analyzing the images there is a bit of noise in the classifications, so the next step would be to try to reduce it. There were two main ideas to reduce the noise they are implemented in the files that start with *04_Smoothing*. Unfortunatly the results are not as good as an image without anny smoothing.
 
 ## 04_Smoothing_Post_Classification
 Applying a basic smoothing algorithm **after** the classification.
@@ -52,7 +54,7 @@ Applying a basic smoothing algorithm **before** the classification with hopes to
 This script uses a custom kernel, with 0 as the center value, that duplicates the input features in order to give the classifier information on the neighboring pixels. 
 
 ## 05_StratifiedRandomSampling
-Up until this point the training data has been gathers using random sampling. This type of sampling does not ensure that every type of terrain is used for training, that lack of information may lead the classifiers to misclassify some pixels.  To solve this issue a  stratified random sampling was implemented to gather training data.
+Up until this point the training data has been gatherd using random sampling. This type of sampling does not ensure that every type of terrain is represented during training, that lack of information may lead the classifiers to misclassify some pixels.  To solve this issue a  stratified random sampling based on land cover was implemented to gather training data.
 
 ## 06_Masking_Zones
 After analyzing the images we found that a part of a highway was being misclassified. Using masks to never classify certain zones, seemed like a good idea. This script only applies a mask of the highway, but it can easily be extended to mask anything. 
